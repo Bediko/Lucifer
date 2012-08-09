@@ -25,7 +25,6 @@ fach= {
     "Wahlpflichtmodul Vorlesung 1"                      => "WPV1",
     "Numerik für Informatiker"                          => "NUM",
   }
-https://gist.github.com/3304006
 agent = Mechanize.new
 page = agent.get('https://studinfo.hsnr.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=user&type=0&application=qispos')
 

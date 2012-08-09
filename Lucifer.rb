@@ -3,7 +3,7 @@ require 'rubygems'
 require 'mechanize'
 require 'password'
 
-fach= { 
+subject= { 
     "Mathematik 1"                                      => "MAT1",
     "Digitaltechnik"                                    => "DIG",
     "Einführung in die Programmierung"                  => "EPR",
@@ -43,22 +43,22 @@ rescue
   exit
 end
 
-notenspiegel=0.0
-anzahl=0.0
+gpa=0.0
+count=0.0
 
 page.search('tr').each do |row|
-  name,note,credits = row.xpath('./td[2] | ./td[4] | ./td[6]')
-  if name && note   
+  name,grade,credits = row.xpath('./td[2] | ./td[4] | ./td[6]')
+  if name && grade   
     nbsp = Nokogiri::HTML("&nbsp;").text
-    note=note.content.gsub(nbsp,"").gsub(",",".");
+    grade=grade.content.gsub(nbsp,"").gsub(",",".");
     credits=credits.content.gsub(nbsp,"");
     name=name.content.gsub(nbsp,"");
-    next if note.empty?
-    print fach[name]+"\t"+note+"\t"+credits+"\n"
-    notenspiegel+=note.to_f*credits.to_f
-    anzahl+=credits.to_f
+    next if grade.empty?
+    print subject[name]+"\t"+grade+"\t"+credits+"\n"
+    gpa+=grade.to_f*credits.to_f
+    count+=credits.to_f
   end
 end
-notenspiegel=notenspiegel/anzahl
-puts notenspiegel
+gpa=gpa/count
+puts gpa
 

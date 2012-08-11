@@ -1,7 +1,7 @@
 #encoding: UTF-8
 require 'rubygems'
 require 'mechanize'
-require 'password'
+require 'read-password'
 
 subject= { 
     "Mathematik 1"                                      => "MAT1",
@@ -30,7 +30,8 @@ page = agent.get('https://studinfo.hsnr.de/qisserver/servlet/de.his.servlet.Requ
 
 puts "Mtnr?"
 mtnr= gets
-password = Password.get("Password?")
+ 
+password = Kernel::password()     
 
 login_form = page.form('loginform')
 login_form.asdf = mtnr

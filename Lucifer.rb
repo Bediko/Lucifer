@@ -26,7 +26,11 @@ subject= {
     "Numerik für Informatiker"                          => "NUM",
   }
 agent = Mechanize.new
-page = agent.get('https://studinfo.hsnr.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=user&type=0&application=qispos')
+begin
+    page = agent.get('https://studinfo.hsnr.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=user&type=0&application=qispos')
+rescue => e
+    p e.message
+end
 
 puts "Mtnr?"
 mtnr= gets

@@ -73,4 +73,4 @@ page.search('tr').each do |row|
   end
 end
 gpa=gpa/count
-puts gpa
+puts gpa.round(1)

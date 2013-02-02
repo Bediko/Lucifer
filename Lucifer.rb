@@ -23,6 +23,11 @@ subject= {
   "Datennetzmanagement"                               => "DNM",
   "Web Engineering"                                   => "WEB",
   "WahlpflichtmodVorlesung 1"                         => "WPV1",
+  "Algorithmen Datenstruktur"                         => "ALD",
+  "Datennetze Datenübertragu"                         => "DNU",
+  "Wahlpflichtmod Hauptsemin"                         => "WPS2",
+  "Wahlpflichtmodul Projekt"                          => "WPP",
+
 }
 agent = Mechanize.new
 begin

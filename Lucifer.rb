@@ -50,8 +50,8 @@ login_form.asdf = mtnr
 login_form.fdsa = password
 page = agent.submit(login_form, login_form.buttons.first)
 begin
-  page = agent.page.link_with(text: 'Notenspiegel').click
-  page= agent.page.link_with(text: 'Bachelor BA Informatik').click
+  page = agent.page.link_with(text:'Notenspiegel').click
+  page= agent.page.link_with(text:'Bachelor BA Informatik').click
 rescue
   pp 'Mtnr oder Password falsch'
   exit
@@ -64,18 +64,19 @@ page.search('tr').each do |row|
   name,grade,credits = row.xpath('./td[2] | ./td[4] | ./td[6]')
   if name && grade
     nbsp = Nokogiri::HTML("&nbsp;").text
-    grade=grade.content.gsub(nbsp,"").gsub(",",".");
-    credits=credits.content.gsub(nbsp,"");
-    name=name.content.gsub(nbsp,"");
-    next if grade.empty?
+    grade=grade.content.gsub(nbsp,"").gsub(",",".").strip;
+    credits=credits.content.gsub(nbsp,"").strip;
+    name=name.content.gsub(nbsp,"").strip;
+    next if grade.empty? or grade == "0.0"
     if subject[name]
       print subject[name]+"\t"+grade+"\t"+credits+"\n" 
     else
       print name+"\t"+grade+"\t"+credits+"\n"
     end
-    gpa+=grade.to_f*credits.to_f
-    count+=credits.to_f
+    gpa+=grade.to_f.round(1)*credits.to_f.round(1)
+    count+=credits.to_f.round(1)
   end
 end
 gpa=gpa/count
-puts gpa.round(1)
+puts "Schnitt: "+ gpa.round(1).to_s
+puts count.to_s

@@ -27,6 +27,10 @@ subject= {
   "Datennetze Datenübertragu"                         => "DNU",
   "Wahlpflichtmod Hauptsemin"                         => "WPS2",
   "Wahlpflichtmodul Projekt"                          => "WPP",
+  "Software Engineering"                              => "SWE",
+  "Verteilte Systeme"                                 => "VSY",
+  "IT Sicherheit"                                     => "ITS",
+  "Echtzeitsysteme"                                   => "EZS"
 
 }
 agent = Mechanize.new

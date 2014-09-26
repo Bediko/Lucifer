@@ -1,5 +1,5 @@
-#encoding: UTF-8
-require 'rubygems'
+#!/usr/bin/env ruby
+
 require 'mechanize'
 require 'read-password'
 
@@ -12,10 +12,10 @@ subject= {
   "Mikroprozessortechnik"                             => "MPT",
   "Algorithmen+Datenstruktur"                         => "ALD",
   "Betriebssysteme"                                   => "BSY",
-  "Objektorient.Anwend.Entwi"                         => "OOA",
-  "Betriebswirt.+Marketing"                           => "BWM",
+  "Objektorient Anwend Entwi"                         => "OOA",
+  "Betriebswirt Marketing"                            => "BWM",
   "Statistik"                                         => "STA",
-  "Graphische DV+Bildverarb."                         => "GRA",
+  "Graphische DV Bildverarb"                          => "GRA",
   "Interaktive Systeme"                               => "IAS",
   "Theoretische Konzepte"                             => "THK",
   "Datennetze+Datenübertrag."                         => "DNU",
@@ -30,12 +30,21 @@ subject= {
   "Software Engineering"                              => "SWE",
   "Verteilte Systeme"                                 => "VSY",
   "IT Sicherheit"                                     => "ITS",
-  "Echtzeitsysteme"                                   => "EZS"
+  "Echtzeitsysteme"                                   => "EZS",
+  "WahlpflichtmodVorlesung 2"                         => "WPV2",
+  "Mathe. Meth. d. Mustererk"						  => "MMM",
+  "Effiziente Algorithmen"							  => "EAL",
+  "Parallel Computing"								  => "PAC",
+  "Wissensbasierte Systeme"							  => "WSY",
+  "Multimedia Datenbanken"							  => "MDB",
+  "Eingebettete Systeme"							  => "EBS",
+  "Bildanalyse"										  => "BAN",
+  "Information Retrieval"							  => "INR"
 
 }
 agent = Mechanize.new
 begin
-  page = agent.get('https://studinfo.hsnr.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=user&type=0&application=qispos')
+  page = agent.get('https://studinfo.hsnr.de/qisserver/rds?state=user&type=0')
 rescue => e
   p e.message
 end
@@ -43,19 +52,20 @@ end
 if ARGV[0]
   mtnr=ARGV[0]
 else
-  puts "Mtnr?"
+  puts "login?"
   mtnr= gets
+  mtnr=mtnr.strip
 end
 
 password = Kernel::password()
-
+password=password.strip
 login_form = page.form('loginform')
-login_form.asdf = mtnr
-login_form.fdsa = password
-page = agent.submit(login_form, login_form.buttons.first)
+login_form['asdf'] = mtnr
+login_form['fdsa'] = password
+page = agent.submit(login_form)
 begin
   page = agent.page.link_with(text:'Notenspiegel').click
-  page= agent.page.link_with(text:'Bachelor BA Informatik').click
+  page= agent.page.link_with(text:'Master MA Informatik').click
 rescue
   pp 'Mtnr oder Password falsch'
   exit
@@ -71,14 +81,14 @@ page.search('tr').each do |row|
     grade=grade.content.gsub(nbsp,"").gsub(",",".").strip;
     credits=credits.content.gsub(nbsp,"").strip;
     name=name.content.gsub(nbsp,"").strip;
-    next if grade.empty? or grade == "0.0"
+    next if grade.empty? or grade == "0.0" or Float(grade) >4.0
     if subject[name]
       print subject[name]+"\t"+grade+"\t"+credits+"\n" 
     else
       print name+"\t"+grade+"\t"+credits+"\n"
     end
-    gpa+=grade.to_f.round(1)*credits.to_f.round(1)
-    count+=credits.to_f.round(1)
+    gpa+=grade.to_f*credits.to_f
+    count+=credits.to_f
   end
 end
 gpa=gpa/count
